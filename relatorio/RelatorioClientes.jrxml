@@ -53,7 +53,7 @@
 					<textElement>
 						<font size="15" isBold="true"/>
 					</textElement>
-					<text><![CDATA[COMANDO DO POLICIAMENTO DO INTERIOR]]></text>
+					<text><![CDATA[COMANDO DE POLICIAMENTO DO INTERIOR]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="225" y="65" width="334" height="43" forecolor="#FFFFFF"/>
