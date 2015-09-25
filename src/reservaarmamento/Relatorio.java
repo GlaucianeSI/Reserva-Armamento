@@ -46,10 +46,11 @@ public class Relatorio extends javax.swing.JFrame {
      */
     public void relatorioDiario() throws JRException {
 
-        String data;
+        String data, data2;
         data = data_relatorio1.getText().toString();
+        data2 = data_relatorio4.getText().toString();
         com.conecta();
-        String sql = "SELECT usuario.nome_policial, usuario.rg_policial, material.nome_material, destino_material.local_destino, retirada_material.data_retirada, retirada_material.data_devolucao FROM usuario, material, destino_material, retirada_material WHERE data_retirada LIKE  '%"+data+"%'";
+        String sql = "SELECT usuario.nome_policial, usuario.rg_policial, material.nome_material, destino_material.local_destino, retirada_material.data_retirada, retirada_material.data_devolucao FROM usuario, material, destino_material, retirada_material WHERE data_retirada LIKE  '%"+data+"%' = data_retirada LIKE  '%"+data2+"%'";
 
         PreparedStatement cnd;
         ArrayList<RelatorioMaterialPago> relatorios = new ArrayList<RelatorioMaterialPago>();
@@ -72,7 +73,7 @@ public class Relatorio extends javax.swing.JFrame {
                 relatorio.setDatadev(rs.getString("data_devolucao"));
 
                 relatorios.add(relatorio);
-                System.out.print(relatorios);
+//                System.out.print(relatorios);
             }
 
             // compilacao do JRXML
@@ -242,9 +243,10 @@ public class Relatorio extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        data_relatorio1 = new javax.swing.JFormattedTextField();
         data_relatorio2 = new javax.swing.JFormattedTextField();
         data_relatorio3 = new javax.swing.JFormattedTextField();
+        data_relatorio4 = new javax.swing.JFormattedTextField();
+        data_relatorio1 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(689, 433));
@@ -292,13 +294,6 @@ public class Relatorio extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setText("Relatório de Consumo:");
 
-        data_relatorio1.setText("DD/MM/AAAA");
-        data_relatorio1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                data_relatorio1ActionPerformed(evt);
-            }
-        });
-
         data_relatorio2.setText("DD/MM/AAAA");
         data_relatorio2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -310,6 +305,20 @@ public class Relatorio extends javax.swing.JFrame {
         data_relatorio3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 data_relatorio3ActionPerformed(evt);
+            }
+        });
+
+        data_relatorio4.setText("DD/MM/AAAA");
+        data_relatorio4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                data_relatorio4ActionPerformed(evt);
+            }
+        });
+
+        data_relatorio1.setText("DD/MM/AAAA");
+        data_relatorio1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                data_relatorio1ActionPerformed(evt);
             }
         });
 
@@ -341,8 +350,10 @@ public class Relatorio extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(data_relatorio1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                        .addComponent(data_relatorio4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(data_relatorio1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,6 +362,7 @@ public class Relatorio extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton1)
+                    .addComponent(data_relatorio4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(data_relatorio1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -377,7 +389,7 @@ public class Relatorio extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(289, 289, 289)
                         .addComponent(jButton4)))
-                .addContainerGap(453, Short.MAX_VALUE))
+                .addContainerGap(368, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,6 +458,10 @@ public class Relatorio extends javax.swing.JFrame {
         
     }//GEN-LAST:event_data_relatorio3ActionPerformed
 
+    private void data_relatorio4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_data_relatorio4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_data_relatorio4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -485,6 +501,7 @@ public class Relatorio extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField data_relatorio1;
     private javax.swing.JFormattedTextField data_relatorio2;
     private javax.swing.JFormattedTextField data_relatorio3;
+    private javax.swing.JFormattedTextField data_relatorio4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

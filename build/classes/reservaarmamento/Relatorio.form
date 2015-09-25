@@ -38,7 +38,7 @@
                       <Component id="jButton4" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="453" max="32767" attributes="0"/>
+              <EmptySpace pref="368" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -104,10 +104,12 @@
                       <Group type="102" attributes="0">
                           <Component id="jButton1" min="-2" pref="150" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="data_relatorio1" min="-2" pref="113" max="-2" attributes="0"/>
+                          <Component id="data_relatorio4" min="-2" pref="113" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="60" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="data_relatorio1" min="-2" pref="113" max="-2" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -118,6 +120,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="data_relatorio4" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                       <Component id="data_relatorio1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
@@ -195,14 +198,6 @@
             <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de Consumo:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="data_relatorio1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="DD/MM/AAAA"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="data_relatorio1ActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JFormattedTextField" name="data_relatorio2">
           <Properties>
             <Property name="text" type="java.lang.String" value="DD/MM/AAAA"/>
@@ -217,6 +212,22 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="data_relatorio3ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="data_relatorio4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="DD/MM/AAAA"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="data_relatorio4ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="data_relatorio1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="DD/MM/AAAA"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="data_relatorio1ActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
