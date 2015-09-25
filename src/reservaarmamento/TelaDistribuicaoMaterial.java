@@ -350,7 +350,7 @@ public class TelaDistribuicaoMaterial extends javax.swing.JFrame {
         jLabel2.setText("Setor:");
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jLabel6.setText("Descrição:");
+        jLabel6.setText("Cidade:");
 
         etNomeDestino.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
@@ -973,7 +973,7 @@ public class TelaDistribuicaoMaterial extends javax.swing.JFrame {
         if (!codigo.equals("Novo")) {
             PreparedStatement cnd3;
             try {
-                cnd3 = con.conecta().prepareStatement("select * from destino_material");
+                cnd3 = con.conecta().prepareStatement("select * from destino_material where cod_destino = "+codigo.charAt(0));
                 ResultSet rs3;
                 rs3 = cnd3.executeQuery();
 

@@ -132,7 +132,7 @@ public class CadastrarPM extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         matricula = new UpperCaseField();
         jLabel5 = new javax.swing.JLabel();
-        usuario = new UpperCaseField();
+        usuario = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         senha = new javax.swing.JPasswordField();
         jLabel7 = new javax.swing.JLabel();

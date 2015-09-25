@@ -151,16 +151,14 @@ public class ManterPM extends javax.swing.JFrame {
                 
                 
                       if(rs.getString("digital_policial") == null){
-                          Icon ic = new ImageIcon("fechar.png");
-                          bio.setIcon(ic);
+                          //Icon ic = new ImageIcon("fechar.png");
                           bio.setText("Biometria Não Cadastrada");
-                          //bio.setIcon(new Icon(ICONES.fechar.jpg));
+                          bio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICONES/icones/fechar.png")));
                           
                       }
                       else{
-                          Icon ic = new ImageIcon("confirmar3.png");
-                          bio.setIcon(ic);
                           bio.setText("Biometria Cadastrada");
+                          bio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICONES/icones/confirmar3.png")));
                       }
              }catch(Exception erro){
                  JOptionPane.showMessageDialog(null, erro+"  Erro ao buscar dados do PM");
