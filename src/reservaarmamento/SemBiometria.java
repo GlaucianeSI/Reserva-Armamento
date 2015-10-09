@@ -6,12 +6,8 @@
 
 package reservaarmamento;
 
-import com.nitgen.SDK.BSP.NBioBSPJNI;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import reservaarmamento.conexao.Conexao;
+import reservaarmamento.UpperCaseField;
 
 /**
  *

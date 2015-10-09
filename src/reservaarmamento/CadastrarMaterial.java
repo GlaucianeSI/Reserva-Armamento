@@ -5,6 +5,7 @@
  */
 package reservaarmamento;
 
+import reservaarmamento.conexao.Conexao;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

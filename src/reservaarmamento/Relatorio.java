@@ -5,6 +5,10 @@
  */
 package reservaarmamento;
 
+import reservaarmamento.bean.RelatorioMaterial;
+import reservaarmamento.bean.RelatorioMaterialPago;
+import reservaarmamento.bean.RelatorioConsumo;
+import reservaarmamento.conexao.Conexao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,15 +48,16 @@ public class Relatorio extends javax.swing.JFrame {
      *
      * @throws JRException
      */
-    public void relatorioDiario() throws JRException {
+    public void relatorioRetiradaMaterial() throws JRException {
 
         String data;
         data = data_relatorio1.getText().toString();
         com.conecta();
-        String sql = "SELECT usuario.nome_policial, usuario.rg_policial, material.nome_material, destino_material.local_destino, retirada_material.data_retirada, retirada_material.data_devolucao FROM usuario, material, destino_material, retirada_material WHERE data_retirada LIKE  '%"+data+"%'";
+        String sql = "SELECT usuario.nome_policial, usuario.rg_policial, material.nome_material, material.numero_material, retirada_material.data_Retirada, retirada_material.data_devolucao\n"
+                + "FROM usuario, material, retirada_material WHERE usuario.cod_policial = retirada_material.usuario_cod_policial";
 
         PreparedStatement cnd;
-        ArrayList<RelatorioMaterialPago> relatorios = new ArrayList<RelatorioMaterialPago>();
+        ArrayList<RelatorioMaterialPago> relatorios = new ArrayList<>();
         try {
             cnd = com.conecta().prepareStatement(sql);
             ResultSet rs;
@@ -67,7 +72,7 @@ public class Relatorio extends javax.swing.JFrame {
                 relatorio.setNome(rs.getString("nome_policial"));
                 relatorio.setRg(rs.getString("rg_policial"));
                 relatorio.setMaterial(rs.getString("nome_material"));
-                relatorio.setDestino(rs.getString("local_destino"));
+                relatorio.setDestino(rs.getString("numero_material"));
                 relatorio.setDataret(rs.getString("data_retirada"));
                 relatorio.setDatadev(rs.getString("data_devolucao"));
 
@@ -107,12 +112,12 @@ public class Relatorio extends javax.swing.JFrame {
     }
 
     public void relatorioConsumo() throws JRException {
- 
+
         com.conecta();
-        String sql = "select usuario.nome_policial, material.nome_material, retirada_material.data_retirada, retirada_material.data_devolucao, retirada_material_has_material.obs from usuario, material, retirada_material, retirada_material_has_material where usuario.cod_policial = retirada_material.usuario_cod_policial";
+        String sql = "select material.nome_material, tipo_material.qtd_previsto, retirada_material_has_material.qtde_Retirada, tipo_material.quantidade_material from material, tipo_material, retirada_material_has_material where retirada_material_has_material.material_cod_material = tipo_material.codigo_tipo_material";
 
         PreparedStatement cnd;
-        ArrayList<RelatorioConsumo> relatorios = new ArrayList<RelatorioConsumo>();
+        ArrayList<RelatorioConsumo> relatorios = new ArrayList<>();
         try {
             cnd = com.conecta().prepareStatement(sql);
             ResultSet rs;
@@ -125,12 +130,10 @@ public class Relatorio extends javax.swing.JFrame {
 
                 //nome_policial 	nome_material 	data_retirada 	data_devolucao
                 RelatorioConsumo relatorio = new RelatorioConsumo();
-                relatorio.setNomePM(rs.getString("nome_policial"));
-                relatorio.setMaterialRetirado(rs.getString("nome_material"));
-               // relatorio.setMaterialDevolvido(rs.getString(""));
-                relatorio.setDataRetirada(rs.getString("data_retirada"));
-                relatorio.setDataDevolucao(rs.getString("data_devolucao"));
-                relatorio.setObservacao(rs.getString("obs"));
+                relatorio.setNomeMaterial(rs.getString("nome_material"));
+                relatorio.setQuantidadePrevisto(rs.getString("qtd_previsto"));
+                relatorio.setQuantidadeRetirada(rs.getString("qtde_Retirada"));
+                relatorio.setQuantidadeExistente(rs.getString("quantidade_material"));
                 relatorios.add(relatorio);
                 //System.out.print(relatorios);
             }
@@ -172,7 +175,7 @@ public class Relatorio extends javax.swing.JFrame {
         String sql = "SELECT material.nome_material,tipo_material.quantidade_material, retirada_material_has_material.qtde_Retirada, retirada_material_has_material.qtde_devolvida FROM material, tipo_material, retirada_material_has_material";
 
         PreparedStatement cnd;
-        ArrayList<RelatorioMaterial> relatorios = new ArrayList<RelatorioMaterial>();
+        ArrayList<RelatorioMaterial> relatorios = new ArrayList<>();
         try {
             cnd = com.conecta().prepareStatement(sql);
             ResultSet rs;
@@ -395,7 +398,7 @@ public class Relatorio extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             // TODO add your handling code here:
-            relatorioDiario();
+            relatorioRetiradaMaterial();
         } catch (JRException ex) {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -430,20 +433,20 @@ public class Relatorio extends javax.swing.JFrame {
 
     private void data_relatorio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_data_relatorio1ActionPerformed
         // TODO add your handling code here:
-        
-        
+
+
     }//GEN-LAST:event_data_relatorio1ActionPerformed
 
     private void data_relatorio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_data_relatorio2ActionPerformed
         // TODO add your handling code here:
-        
-        
+
+
     }//GEN-LAST:event_data_relatorio2ActionPerformed
 
     private void data_relatorio3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_data_relatorio3ActionPerformed
         // TODO add your handling code here:
-        
-        
+
+
     }//GEN-LAST:event_data_relatorio3ActionPerformed
 
     /**

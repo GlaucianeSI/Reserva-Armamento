@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package reservaarmamento;
 
+import reservaarmamento.conexao.Conexao;
 import java.awt.Component;
 import java.awt.print.PrinterException;
 import java.sql.PreparedStatement;
@@ -13,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,215 +21,208 @@ import javax.swing.table.DefaultTableModel;
  * @author glaucia
  */
 public class ManterPM extends javax.swing.JFrame {
- /**
+
+    /**
      * Creates new form ManterPM
      */
     static int codexec = 0;
-    Conexao con ;
-  
+    Conexao con;
+    static int selecao = 0;
+
     public ManterPM() {
-       con = new Conexao();
-       initComponents();
-        
+        con = new Conexao();
+        initComponents();
+
     }
-    public static int pegaCodigo(){
+
+    public static int pegaCodigo() {
         int codigo = 0;
         int linha;
         linha = tbPart.getSelectedRow();
-        
+
         codigo = Integer.parseInt(tbPart.getValueAt(linha, 0).toString());
-        
+
         return codigo;
     }
-    public void limparCampos(){
-    nome.setText("");
-    rg.setText("");
-    mat.setText("");
-    grad.setText("");
-    }  
 
-    public void atualizaTabela(){
-         con.conecta();
-         String sql = "select * from usuario where nome_policial LIKE '"+tvNome.getText().toString()+"%'";
+    public void limparCampos() {
+        nome.setText("");
+        rg.setText("");
+        mat.setText("");
+        grad.setText("");
+    }
 
-         PreparedStatement cnd;
-         try {
-                cnd = con.conecta().prepareStatement(sql);
-                ResultSet rs;
-                rs = cnd.executeQuery();
+    public void atualizaTabela() {
+        con.conecta();
+        String sql = "select * from usuario where nome_policial LIKE '" + tvNome.getText().toString() + "%'";
 
+        PreparedStatement cnd;
+        try {
+            cnd = con.conecta().prepareStatement(sql);
+            ResultSet rs;
+            rs = cnd.executeQuery();
 
-                DefaultTableModel model = (DefaultTableModel) tbPart.getModel();
-                model.setNumRows(0);
-        
-                tbPart.getColumnModel().getColumn(0).setMinWidth(0);  
-                tbPart.getColumnModel().getColumn(0).setMaxWidth(0); 
-               /* tbPart.getColumnModel().getColumn(2).setMinWidth(0); 
-                tbPart.getColumnModel().getColumn(3).setMaxWidth(50);
-                tbPart.getColumnModel().getColumn(4).setMaxWidth(50);
-                tbPart.getColumnModel().getColumn(5).setMaxWidth(50);
-            //    tbPart.getColumnModel().getColumn(5).setMaxWidth(150);*/
+            DefaultTableModel model = (DefaultTableModel) tbPart.getModel();
+            model.setNumRows(0);
 
+            tbPart.getColumnModel().getColumn(0).setMinWidth(0);
+            tbPart.getColumnModel().getColumn(0).setMaxWidth(0);
 
-         while(rs.next()){
-          //System.out.println("Nome: " + rs.getString("nome"));
-        model.addRow(
-                      new Object[]{
-                      rs.getString("cod_policial"),
-                      rs.getString("posto_graduacao"),
-                      rs.getString("nome_policial"),
-                      rs.getString("rg_policial"),
-                      rs.getString("matricula_policial"),
-                      rs.getString("tipo_usu")
-                }
-             );
-         }
+            while (rs.next()) {
+                //System.out.println("Nome: " + rs.getString("nome"));
+                model.addRow(
+                        new Object[]{
+                            rs.getString("cod_policial"),
+                            rs.getString("posto_graduacao"),
+                            rs.getString("nome_policial"),
+                            rs.getString("rg_policial"),
+                            rs.getString("matricula_policial"),
+                            rs.getString("tipo_usu")
+                        }
+                );
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ManterPM.class.getName()).log(Level.SEVERE, null, ex);
-            
-            JOptionPane.showMessageDialog(rootPane,"erro "+ex.getMessage());
+
+            JOptionPane.showMessageDialog(rootPane, "erro " + ex.getMessage());
         }
-        
-       }
-    
-    public void upDatePM(){
+
+    }
+
+    public void upDatePM() {
         if (tbPart.getSelectedRow() != -1) {
             int resposta = JOptionPane.showConfirmDialog(this, "Confirma atualização?", "Confirmação", JOptionPane.YES_NO_OPTION);
             if (resposta == JOptionPane.YES_OPTION) {
-                 int codigo = pegaCodigo();
-        String sql = "UPDATE usuario SET posto_graduacao = ?,"
-                + " nome_policial = ?,"
-                + " rg_policial = ? , "
-                + "matricula_policial = ? , "
-                + "tipo_usu = ?"
-                + "WHERE cod_policial = "+codigo+" ";
-        
-        try{
-            
-           con.conecta();
-           
-           PreparedStatement cnd;
-           
-           cnd = con.conecta().prepareStatement(sql);
-           cnd.setString(1, grad.getText());
-           cnd.setString(2, nome.getText());
-           cnd.setString(3,rg.getText());
-           cnd.setString(4,mat.getText());
-           cnd.setString(5,funcao.getText());
-           cnd.executeUpdate();
-           JOptionPane.showMessageDialog(null, "Informação atualizada com sucesso!");
-           atualizarTabela();
-            
-        }catch(SQLException erro){
-            JOptionPane.showMessageDialog(null, erro);
-        }
-    }      
+                int codigo = pegaCodigo();
+                String sql = "UPDATE usuario SET posto_graduacao = ?,"
+                        + " nome_policial = ?,"
+                        + " rg_policial = ? , "
+                        + "matricula_policial = ? , "
+                        + "tipo_usu = ?"
+                        + "WHERE cod_policial = " + codigo + " ";
+
+                try {
+
+                    con.conecta();
+
+                    PreparedStatement cnd;
+
+                    cnd = con.conecta().prepareStatement(sql);
+                    cnd.setString(1, grad.getText());
+                    cnd.setString(2, nome.getText());
+                    cnd.setString(3, rg.getText());
+                    cnd.setString(4, mat.getText());
+                    cnd.setString(5, funcao.getText());
+                    cnd.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Informação atualizada com sucesso!");
+                    atualizarTabela();
+
+                } catch (SQLException erro) {
+                    JOptionPane.showMessageDialog(null, erro);
+                }
+            }
         }
     }
 
-     public void mostrarPM(){
-       
+    public void mostrarPM() {
+
         int seleciona = tbPart.getSelectedRow();
-        
+
         grad.setText(tbPart.getValueAt(seleciona, 1).toString());
         nome.setText(tbPart.getValueAt(seleciona, 2).toString());
         rg.setText(tbPart.getValueAt(seleciona, 3).toString());
         mat.setText(tbPart.getValueAt(seleciona, 4).toString());
         funcao.setText(tbPart.getValueAt(seleciona, 5).toString());
-        
+
         con.conecta();
-         String sql = "select * from usuario where cod_policial = "+tbPart.getValueAt(seleciona, 0).toString();
+        String sql = "select * from usuario where cod_policial = " + tbPart.getValueAt(seleciona, 0).toString();
 
-         PreparedStatement cnd;
-         try {
-                cnd = con.conecta().prepareStatement(sql);
-                ResultSet rs;
-                rs = cnd.executeQuery();
-                rs.next();
-                
-                
-                      if(rs.getString("digital_policial") == null){
-                          //Icon ic = new ImageIcon("fechar.png");
-                          bio.setText("Biometria Não Cadastrada");
-                          bio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICONES/icones/fechar.png")));
-                          
-                      }
-                      else{
-                          bio.setText("Biometria Cadastrada");
-                          bio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICONES/icones/confirmar3.png")));
-                      }
-             }catch(Exception erro){
-                 JOptionPane.showMessageDialog(null, erro+"  Erro ao buscar dados do PM");
-             }
-     
-    }
-     
-     public void atualizarTabela() {
-       
-         con.conecta();
-         String sql = "select * from usuario;";
+        PreparedStatement cnd;
+        try {
+            cnd = con.conecta().prepareStatement(sql);
+            ResultSet rs;
+            rs = cnd.executeQuery();
+            rs.next();
 
-         PreparedStatement cnd;
-         try {
-               cnd = con.conecta().prepareStatement(sql);
-               ResultSet rs;
-               rs = cnd.executeQuery();
-        
-               DefaultTableModel model = (DefaultTableModel) tbPart.getModel();
-               model.setNumRows(0);
-           
-        while(rs.next()){
-          //System.out.println("Nome: " + rs.getString("nome"));
-               model.addRow(
-                  new Object[]{
-                      rs.getString("cod_policial"), 
-                      rs.getString("posto_graduacao"),
-                      rs.getString("nome_policial"),
-                      rs.getString("rg_policial"),  
-                      rs.getString("matricula_policial"), 
-                      rs.getString("usuario"),
-                      rs.getString("senhar"),
-                      rs.getString("tipo_usu"),
-                  }
-          );
+            if (rs.getString("digital_policial") == null) {
+                //Icon ic = new ImageIcon("fechar.png");
+                bio.setText("Biometria Não Cadastrada");
+                bio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICONES/icones/fechar.png")));
+
+            } else {
+                bio.setText("Biometria Cadastrada");
+                bio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ICONES/icones/confirmar3.png")));
+            }
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro + "  Erro ao buscar dados do PM");
         }
-                   
+
+    }
+
+    public void atualizarTabela() {
+
+        con.conecta();
+        String sql = "select * from usuario;";
+
+        PreparedStatement cnd;
+        try {
+            cnd = con.conecta().prepareStatement(sql);
+            ResultSet rs;
+            rs = cnd.executeQuery();
+
+            DefaultTableModel model = (DefaultTableModel) tbPart.getModel();
+            model.setNumRows(0);
+
+            while (rs.next()) {
+                //System.out.println("Nome: " + rs.getString("nome"));
+                model.addRow(
+                        new Object[]{
+                            rs.getString("cod_policial"),
+                            rs.getString("posto_graduacao"),
+                            rs.getString("nome_policial"),
+                            rs.getString("rg_policial"),
+                            rs.getString("matricula_policial"),
+                            rs.getString("usuario"),
+                            rs.getString("senhar"),
+                            rs.getString("tipo_usu"),}
+                );
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ManterPM.class.getName()).log(Level.SEVERE, null, ex);
-            
-            JOptionPane.showMessageDialog(rootPane,"erro "+ex.getMessage());
+
+            JOptionPane.showMessageDialog(rootPane, "erro " + ex.getMessage());
         }
-      }
-    
-    public void excluirPM(){
+    }
+
+    public void excluirPM() {
         if (tbPart.getSelectedRow() != -1) {
             int resposta = JOptionPane.showConfirmDialog(this, "Confirma exclusão do Policial Militar?", "Confirmação", JOptionPane.YES_NO_OPTION);
             if (resposta == JOptionPane.YES_OPTION) {
 
                 // System.out.println("Exclui!!!");
-
                 int codigo = pegaCodigo();
 
                 try {
-                     con.conecta();
-                   
-                    //String query = ();
+                    con.conecta();
 
+                    //String query = ();
                     PreparedStatement cnd;
                     cnd = con.conecta().prepareStatement("delete from usuario where cod_policial=?");
-                    cnd.setInt(1,codigo);
+                    cnd.setInt(1, codigo);
                     cnd.executeUpdate();
                     con.desconecta();
                     JOptionPane.showMessageDialog(null, "registro excluído com sucesso!");
                     atualizaTabela();
-                }catch (SQLException ex) {
+                } catch (SQLException ex) {
                     Logger.getLogger(ManterPM.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um nome da lista!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-}
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -445,11 +436,11 @@ public class ManterPM extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addGap(62, 62, 62)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("");
@@ -588,61 +579,45 @@ public class ManterPM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
-    // TODO add your handling code here:
-        btNovo.setEnabled(true); 
-        btEditar.setEnabled(true);
-        btImprimir.setEnabled(true);
-        btExcluir.setEnabled(true);
-        btSalvar.setEnabled(true);
-        btSair.setEnabled(true);
-        tbPart.setEnabled(true);
-               
-        for (Component com : jPanel1.getComponents()){
-            com.setEnabled(true);
-        }
-        
-        
- //   new CadastrarPM().setVisible(true);
-        int op = Integer.parseInt(JOptionPane.showInputDialog("Informe a sua opção:\n1 - Cadastrar com Briometria\n2 - Cadastrar sem Biometria"));
-        if(op == 1){
-            new CadastrarPM("-1").setVisible(true);
-        }
-        else if(op == 2){
-            new SemBiometria().setVisible(true);
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"Opção Inválida");
-        }
-         //  codexec = 1;
+        // TODO add your handling code here:
+//        btNovo.setEnabled(true); 
+//        btEditar.setEnabled(true);
+//        btImprimir.setEnabled(true);
+//        btExcluir.setEnabled(true);
+//        btSalvar.setEnabled(true);
+//        btSair.setEnabled(true);
+//        tbPart.setEnabled(true);
+       
+        new CadastrarPM().setVisible(true);
+
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void pesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisaActionPerformed
-     
+
         atualizaTabela();
-        btNovo.setEnabled(true); 
-        btEditar.setEnabled(true);
-        btImprimir.setEnabled(true);
-        btExcluir.setEnabled(true);
-        btSalvar.setEnabled(true);
-        btSair.setEnabled(true);
-        tbPart.setEnabled(true);
-        jPanel1.setEnabled(true);
-             
-         
+//        btNovo.setEnabled(true);
+//        btEditar.setEnabled(true);
+//        btImprimir.setEnabled(true);
+//        btExcluir.setEnabled(true);
+//        btSalvar.setEnabled(true);
+//        btSair.setEnabled(true);
+//        tbPart.setEnabled(true);
+//        jPanel1.setEnabled(true);
+
 // TODO add your handling code here:
     }//GEN-LAST:event_pesquisaActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
         // TODO add your handling code here:
-            excluirPM();
-        btNovo.setEnabled(false); 
-        btEditar.setEnabled(false);
-        btImprimir.setEnabled(false);
-        btExcluir.setEnabled(true);
-        btSalvar.setEnabled(true);
-        btSair.setEnabled(true);
-        tbPart.setEnabled(true);
-    
+        excluirPM();
+//        btNovo.setEnabled(false);
+//        btEditar.setEnabled(false);
+//        btImprimir.setEnabled(false);
+//        btExcluir.setEnabled(true);
+//        btSalvar.setEnabled(true);
+//        btSair.setEnabled(true);
+//        tbPart.setEnabled(true);
+
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
@@ -651,38 +626,38 @@ public class ManterPM extends javax.swing.JFrame {
     }//GEN-LAST:event_btSairActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
-        btNovo.setEnabled(false); 
-        btEditar.setEnabled(true);
-        btImprimir.setEnabled(false);
-        btExcluir.setEnabled(false);
-        btSalvar.setEnabled(true);
-        btSair.setEnabled(true);
-        tbPart.setEnabled(false);
-        
+//        btNovo.setEnabled(false);
+//        btEditar.setEnabled(true);
+//        btImprimir.setEnabled(false);
+//        btExcluir.setEnabled(false);
+//        btSalvar.setEnabled(true);
+//        btSair.setEnabled(true);
+//        tbPart.setEnabled(false);
+
         codexec = 2;
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         // TODO add your handling code here:
-       
-        btNovo.setEnabled(false); 
-        btEditar.setEnabled(true);
-        btImprimir.setEnabled(true);
-        btExcluir.setEnabled(false);
-        btSalvar.setEnabled(true);
-        btSair.setEnabled(true);
-        tbPart.setEnabled(false);
-        
-        try {  
-        tbPart.print();  
-    } catch (PrinterException ex) {  
-        JOptionPane.showMessageDialog(this, "Não foi possível imprimir\n" + ex.getMessage());  
-    }  
+
+//        btNovo.setEnabled(false);
+//        btEditar.setEnabled(true);
+//        btImprimir.setEnabled(true);
+//        btExcluir.setEnabled(false);
+//        btSalvar.setEnabled(true);
+//        btSair.setEnabled(true);
+//        tbPart.setEnabled(false);
+
+        try {
+            tbPart.print();
+        } catch (PrinterException ex) {
+            JOptionPane.showMessageDialog(this, "Não foi possível imprimir\n" + ex.getMessage());
+        }
     }//GEN-LAST:event_btImprimirActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         // TODO add your handling code here:
-         upDatePM();
+        upDatePM();
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void tbPartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPartMouseClicked
@@ -692,8 +667,8 @@ public class ManterPM extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new CadastrarPM(tbPart.getValueAt(tbPart.getSelectedRow(), 0).toString()).setVisible(true);
-        
+        new CadastrarPM().setVisible(true);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -6,6 +6,7 @@
 
 package reservaarmamento;
 
+import reservaarmamento.conexao.Conexao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

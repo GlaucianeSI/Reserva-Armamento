@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package reservaarmamento;
 
+import reservaarmamento.conexao.Conexao;
 import com.nitgen.SDK.BSP.NBioBSPJNI;
 import java.awt.HeadlessException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,95 +18,59 @@ import javax.swing.JOptionPane;
  * @author glaucia
  */
 public class CadastrarPM extends javax.swing.JFrame {
+
     Conexao con_cad_pm;
-    private NBioBSPJNI                      bsp;
-    NBioBSPJNI.IndexSearch      IndexSearchEngine;
-    private NBioBSPJNI.DEVICE_ENUM_INFO     deviceEnumInfo;
-    private short                           openedDevice;
-    private NBioBSPJNI.FIR_HANDLE           hSavedFIR;
-    private NBioBSPJNI.FIR                  fullSavedFIR;
-    private NBioBSPJNI.FIR_TEXTENCODE       textSavedFIR;
+    private NBioBSPJNI bsp;
+    NBioBSPJNI.IndexSearch IndexSearchEngine;
+    private NBioBSPJNI.DEVICE_ENUM_INFO deviceEnumInfo;
+    private short openedDevice;
+    private NBioBSPJNI.FIR_HANDLE hSavedFIR;
+    private NBioBSPJNI.FIR fullSavedFIR;
+    private NBioBSPJNI.FIR_TEXTENCODE textSavedFIR;
     static String codigoPM = "";
 
     /**
      * Creates new form CadastrarPM
      */
+    public CadastrarPM() {
 
-    public CadastrarPM(String cod) {
-        
         this.setExtendedState(MAXIMIZED_BOTH);
-        
+
         con_cad_pm = new Conexao();
         con_cad_pm.conecta();
-        con_cad_pm.executeSQL("select * from usuario");
-        
-        
+//        con_cad_pm.executeSQL("select * from usuario");
+
         initComponents();
         setLocationRelativeTo(null);
-        codigoPM = cod;
-        if(!(codigoPM.equals("-1"))){
-            preencheCampos();
-        }
-        
-       
-        
-         /*
+//        codigoPM = cod;
+//        if((codigoPM.equals("1"))){
+//            preencheCampos();
+//        }
 
-        if (CheckError())
-            return ;
-
-       setTitle("NBioAPI_JavaDemo BSP version: " + bsp.GetVersion());
-
-       NBioBSPJNI.INIT_INFO_0 initInfo0 = bsp.new INIT_INFO_0();
-       bsp.GetInitInfo(initInfo0);
-
-       if (CheckError())
-            return ;
-
-       //editEIQ.setText("" + initInfo0.EnrollImageQuality);
-       //editVIQ.setText("" + initInfo0.VerifyImageQuality);
-       //editMaxFinger.setText("" + initInfo0.MaxFingersForEnroll);
-       //editSPFinger.setText("" + initInfo0.SamplesPerFinger);
-       //editDTimeout.setText("" + initInfo0.DefaultTimeout);
-       //comboSLevel.setSelectedIndex(initInfo0.SecurityLevel - 1);
-
-       //btnGet.setEnabled(true);
-       //btnSet.setEnabled(true);
-       //btnOpen.setEnabled(true);
-
-       if (SetDeviceList() == false)
-          return ;
-
-       //rbtnHFIR.setSelected(true);
-
-       status.setText("Inicializado com sucesso!");
-       */
-       //
-    }
-    
-    public void preencheCampos(){
-        con_cad_pm.conecta();
-         String sql = "select * from usuario where cod_policial = "+codigoPM;
-
-         PreparedStatement cnd;
-         try {
-                cnd = con_cad_pm.conecta().prepareStatement(sql);
-                ResultSet rs;
-                rs = cnd.executeQuery();
-                rs.next();
-                      
-                      posto.setSelectedItem(rs.getString("posto_graduacao"));
-                      nome.setText(rs.getString("nome_policial"));
-                      rg.setText(rs.getString("rg_policial"));
-                      matricula.setText(rs.getString("matricula_policial"));
-                      funcao.setText(rs.getString("tipo_usu"));
-                      senha.setText(rs.getString("senhar"));
-                      usuario.setText(rs.getString("usuario"));
-             }catch(Exception erro){
-                 JOptionPane.showMessageDialog(null, erro+"  Erro ao buscar dados do PM");
-             }
     }
 
+//    public void preencheCampos(){
+//        con_cad_pm.conecta();
+//         String sql = "select * from usuario";
+//
+//         PreparedStatement cnd;
+//         try {
+//                cnd = con_cad_pm.conecta().prepareStatement(sql);
+//                ResultSet rs;
+//                rs = cnd.executeQuery();
+//                rs.next();
+//                      
+//                      posto.setSelectedItem(rs.getString("posto_graduacao"));
+//                      nome.setText(rs.getString("nome_policial"));
+//                      rg.setText(rs.getString("rg_policial"));
+//                      matricula.setText(rs.getString("matricula_policial"));
+//                      funcao.setText(rs.getString("tipo_usu"));
+//                      senha.setText(rs.getString("senhar"));
+//                      usuario.setText(rs.getString("usuario"));
+//             }catch(Exception erro){
+//                 JOptionPane.showMessageDialog(null, erro+"  Erro ao buscar dados do PM");
+//             }
+//    }
     CadastrarPM(Object object, boolean b) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -368,23 +331,22 @@ public class CadastrarPM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    private boolean SetDeviceList(){
-        
+    private boolean SetDeviceList() {
+
         int i, n;
         String szValue;
 
         deviceEnumInfo = bsp.new DEVICE_ENUM_INFO();
         bsp.EnumerateDevice(deviceEnumInfo);
 
-        if (CheckError())  {
-           //btnOpen.setEnabled(false);
-           return false;
+        if (CheckError()) {
+            //btnOpen.setEnabled(false);
+            return false;
         }
 
         n = deviceEnumInfo.DeviceCount;
 
-        if (n == 0)  {
+        if (n == 0) {
             status.setText("Não há leitor biométrico conectado!!");
             //btnOpen.setEnabled(false);
             return false;
@@ -393,7 +355,7 @@ public class CadastrarPM extends javax.swing.JFrame {
         szValue = "Auto_Detect";
         //comboDevice.addItem(szValue);
 
-        for (i = 0; i < n; i++)  {
+        for (i = 0; i < n; i++) {
             szValue = deviceEnumInfo.DeviceInfo[i].Name + "(ID: " + deviceEnumInfo.DeviceInfo[i].Instance + ")";
             //comboDevice.addItem(szValue);
         }
@@ -401,113 +363,115 @@ public class CadastrarPM extends javax.swing.JFrame {
         //comboDevice.setSelectedIndex(0);
         //btnOpen.setEnabled(true);
         openedDevice = 0;
-        
+
         return true;
     }
-    
-     public void Closing()
-    {
+
+    public void Closing() {
         this.disposes();
     }
-     
-     private void AbrirBiometria(){
-               status.setText("NBioBSP OpenDevice start");
 
-        if (openedDevice != 0)
+    private void AbrirBiometria() {
+        status.setText("NBioBSP OpenDevice start");
+
+        if (openedDevice != 0) {
             bsp.CloseDevice(openedDevice);
+        }
 
         openedDevice = 0;
 
         //int nSelectedIndex = comboDevice.getSelectedIndex();
-
-       // if (nSelectedIndex == 0)
-            bsp.OpenDevice();
-       // else  {
+        // if (nSelectedIndex == 0)
+        bsp.OpenDevice();
+        // else  {
         //    nSelectedIndex -= 1;
-           // bsp.OpenDevice(deviceEnumInfo.DeviceInfo[nSelectedIndex].NameID, deviceEnumInfo.DeviceInfo[nSelectedIndex].Instance);
+        // bsp.OpenDevice(deviceEnumInfo.DeviceInfo[nSelectedIndex].NameID, deviceEnumInfo.DeviceInfo[nSelectedIndex].Instance);
         //}
 
-        if (CheckError())
-            return ;
+        if (CheckError()) {
+            return;
+        }
 
         openedDevice = bsp.GetOpenedDeviceID();
         //btnEnroll.setEnabled(true);
-       // btnCapture.setEnabled(true);
+        // btnCapture.setEnabled(true);
 
-       status.setText("Leitor Biométrico conectado!");
+        status.setText("Leitor Biométrico conectado!");
     }
-    
-     public Boolean CheckError(){
-         
-        if (bsp.IsErrorOccured())  {
+
+    public Boolean CheckError() {
+
+        if (bsp.IsErrorOccured()) {
             status.setText("NBioBSP Error Occured [" + bsp.GetErrorCode() + "]");
             return true;
         }
 
         return false;
     }
-     
-      public void disposes(){
-          
-        if (hSavedFIR != null)  {
+
+    public void disposes() {
+
+        if (hSavedFIR != null) {
             hSavedFIR.dispose();
             hSavedFIR = null;
         }
 
-        if (fullSavedFIR != null)
+        if (fullSavedFIR != null) {
             fullSavedFIR = null;
+        }
 
-        if (textSavedFIR != null)
+        if (textSavedFIR != null) {
             textSavedFIR = null;
+        }
 
         if (bsp != null) {
             bsp.dispose();
             bsp = null;
         }
-        
+
         //this.dispose();
     }
-     
-    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
-        if(nome.getText().trim().isEmpty()){
 
-            JOptionPane.showMessageDialog(null,"Preencha o campo Nome!!!","Campo Vazio", JOptionPane.INFORMATION_MESSAGE);
+    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
+        if (nome.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Preencha o campo Nome!!!", "Campo Vazio", JOptionPane.INFORMATION_MESSAGE);
             nome.requestFocus();
 
-        }else if(rg.getText().trim().isEmpty()){
+        } else if (rg.getText().trim().isEmpty()) {
 
-            JOptionPane.showMessageDialog(null,"Preencha o campo R.G. !!!","Campo Vazio", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Preencha o campo R.G. !!!", "Campo Vazio", JOptionPane.INFORMATION_MESSAGE);
             rg.requestFocus();
-         }
-        else if(matricula.getText().trim().isEmpty()){
+        } else if (matricula.getText().trim().isEmpty()) {
 
-            JOptionPane.showMessageDialog(null,"Preencha o campo matricula!!!","Campo Vazio", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Preencha o campo matricula!!!", "Campo Vazio", JOptionPane.INFORMATION_MESSAGE);
             matricula.requestFocus();
 
+        } else {
+
+//
+//        
+            try {
+                con_cad_pm.conecta();
+                PreparedStatement cnd;
+                String sql = "insert into usuario (posto_graduacao, nome_policial, rg_policial, matricula_policial,  usuario, senhar, digital_policial, tipo_usu)"
+                        + "values ('" + posto.getSelectedItem().toString() + "','" + nome.getText() + "', '" + rg.getText() + "', '" + matricula.getText() + "',"
+                        + "'" + usuario.getText() + "', '" + senha.getText() + "','"+ textSavedFIR+ "','" + funcao.getText() + "');";
+                cnd = con_cad_pm.conecta().prepareStatement(sql);
+                cnd.executeUpdate();
+                JOptionPane.showMessageDialog(null, "cadastro realizada com sucesso");
+
+            } catch (SQLException | HeadlessException erro) {
+                JOptionPane.showMessageDialog(null, "houve um erro:");
+            }
         }
-         else{
-              // if (ManterPM.codexec==1){          
-        
-      
-                //inclui novo participante
-                try {
-                    String sql = "insert into usuario (posto_graduacao,nome_policial, rg_policial, matricula_policial,  usuario, senhar, digital_policial, tipo_usu)"+
-                    "values ('"+posto.getSelectedItem().toString()+"','"+nome.getText()+"', '"+rg.getText()+"', '"+matricula.getText()+"',"
-                    + "'"+usuario.getText()+"', '"+senha.getText()+"','"+textSavedFIR.TextFIR+"','"+funcao.getText()+"');";
-                   con_cad_pm.statement.executeUpdate(sql);
-                   JOptionPane.showMessageDialog(null, "cadastro realizada com sucesso");
-                //   dispose();
-             }catch(SQLException | HeadlessException erro){
-            JOptionPane.showMessageDialog(null, "houve um erro:");
-             }
-          }
-      //  }    
-        
+        //  }    
+
     }//GEN-LAST:event_salvarActionPerformed
 
     private void fecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharActionPerformed
         // TODO add your handling code here:
-       dispose();
+        dispose();
     }//GEN-LAST:event_fecharActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -515,9 +479,9 @@ public class CadastrarPM extends javax.swing.JFrame {
         bsp = new NBioBSPJNI();
         AbrirBiometria();
         status.setText("Aguardando Digitais!");
-       //int codigo = ManterPM.pegaCodigo();
+        //int codigo = ManterPM.pegaCodigo();
 
-        if (hSavedFIR != null)  {
+        if (hSavedFIR != null) {
             hSavedFIR.dispose();
             hSavedFIR = null;
         }
@@ -526,70 +490,44 @@ public class CadastrarPM extends javax.swing.JFrame {
         String szValue;
 
         payLoad = bsp.new FIR_PAYLOAD();
-       // payLoad.SetText(String.valueOf(codigo));
+        // payLoad.SetText(String.valueOf(codigo));
 
         hSavedFIR = bsp.new FIR_HANDLE();
 
         bsp.Enroll(hSavedFIR, payLoad);
 
-        if (CheckError())
-            return ;
+        if (CheckError()) {
+            return;
+        }
 
-        if (fullSavedFIR != null)
+        if (fullSavedFIR != null) {
             fullSavedFIR = null;
+        }
 
-        if (textSavedFIR != null)
+        if (textSavedFIR != null) {
             textSavedFIR = null;
+        }
 
         fullSavedFIR = bsp.new FIR();
         bsp.GetFIRFromHandle(hSavedFIR, fullSavedFIR);
 
-        if (CheckError())
-            return ;
+        if (CheckError()) {
+            return;
+        }
 
         textSavedFIR = bsp.new FIR_TEXTENCODE();
         bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
 
-        if (CheckError())
-            return ;
+        if (CheckError()) {
+            return;
+        }
 
         status.setText("Leitura realizada com sucesso");
-        
-        if (CheckError())
-            return ;
-       
-                //Salva os dados alterados
-               /* try {
-                    // TODO add your handling code here:
-                   con_cad_pm = new Conexao();
 
-                    // String para atualização no banco
-                    String query = "update usuario set digital_policial = ?"
-                    + " where cod_policial = 14";
+        if (CheckError()) {
+            return;
+        }
 
-                    //Cria o comando
-                    PreparedStatement stnt = con_cad_pm.conecta().prepareStatement(query);
-
-                    //Seta os valores na
-                    stnt.setString(1, textSavedFIR.TextFIR);
-                   // stnt.setInt(2, codigo);
-                    
-                    //Execulta o comando no banco
-                    stnt.executeUpdate();
-
-                    //Fechar as conecções
-                    stnt.close();
-                    //con.close();
-
-                    //limparCampos();
-                  //  ManterPM.atualizaTabela();
-                    //this.dispose();
-
-                } catch (SQLException e){
-                    //System.out.println("Ocorreu um erro de SQL");
-                    JOptionPane.showMessageDialog(null, "Ocorreu um erro de SQL");
-                }*/
-        
         hSavedFIR.dispose();
         hSavedFIR = null;
 
@@ -634,7 +572,7 @@ public class CadastrarPM extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastrarPM(codigoPM).setVisible(true);
+                new CadastrarPM().setVisible(true);
             }
         });
     }
@@ -663,5 +601,4 @@ public class CadastrarPM extends javax.swing.JFrame {
     private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
 
-    
 }
